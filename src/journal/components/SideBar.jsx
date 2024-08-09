@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 
 export const SideBar = ({ drawerWidth = 240 }) => {
   const { displayName } = useSelector((state) => state.auth);
+  const { notes } = useSelector((state) => state.journalSlice);
   return (
     <Box
       component={'nav'}
@@ -37,28 +38,21 @@ export const SideBar = ({ drawerWidth = 240 }) => {
         <Divider />
 
         <List>
-          {[
-            'Enero',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
-            '10',
-            '11',
-            '12',
-          ].map((text) => (
-            <ListItem key={text} disablePadding>
+          {notes.map((note) => (
+            <ListItem key={note.id} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
                   <TurnedInNot />
                 </ListItemIcon>
                 <Grid container>
-                  <ListItemText primary={text} />
-                  <ListItemText secondary={text} />
+                  <ListItemText
+                    primary={
+                      note.title.length > 17
+                        ? note.title.substring(0, 17) + '...'
+                        : note.title
+                    }
+                  />
+                  <ListItemText secondary={note.body} />
                 </Grid>
               </ListItemButton>
             </ListItem>

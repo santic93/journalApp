@@ -1,7 +1,12 @@
 import { collection, doc, setDoc } from 'firebase/firestore/lite';
-import React from 'react';
 import { FirebaseDB } from '../../firebase/config';
-import { addNewEmptyNote, savingNewNote, setActiveNote } from './journalSlice';
+import {
+  addNewEmptyNote,
+  savingNewNote,
+  setActiveNote,
+  setNotes,
+} from './journalSlice';
+import { loadNOtes } from '../../helpers/loadNotes';
 ////CON ESTE CODIGO ESTOY INSERTANDO UNA NUEVA NOTA EN FIREBASE
 export const startNewNote = () => {
   let now = new Date();
@@ -22,5 +27,14 @@ export const startNewNote = () => {
     ///despues hacer dispatch
     dispatch(addNewEmptyNote(newNote));
     dispatch(setActiveNote(newNote));
+  };
+};
+/////TRAERNOS LAS NOTAS
+export const startLoadingNotes = (uid = '') => {
+  return async (dispatch, getState) => {
+    const { uid } = getState().auth;
+    if (!uid) throw new Error('EL UID DEL USUARIO NO ESXISTE');
+    const notes = await loadNOtes(uid);
+    dispatch(setNotes(notes));
   };
 };
