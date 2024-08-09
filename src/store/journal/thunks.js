@@ -5,11 +5,12 @@ import {
   savingNewNote,
   setActiveNote,
   setNotes,
+  setSaving,
+  updateNote,
 } from './journalSlice';
 import { loadNOtes } from '../../helpers/loadNotes';
 ////CON ESTE CODIGO ESTOY INSERTANDO UNA NUEVA NOTA EN FIREBASE
 export const startNewNote = () => {
-  let now = new Date();
   return async (dispatch, getState) => {
     dispatch(savingNewNote());
     const { uid } = getState().auth;
@@ -17,7 +18,7 @@ export const startNewNote = () => {
     const newNote = {
       title: '',
       body: '',
-      date: now,
+      //date: new Date().getTime(),
     };
     const newDoc = doc(collection(FirebaseDB, `${uid}/journal/notes`));
     ///primero me pide la referencia donde quiero insertarla, y segundo el documento que quiero guardar en la base
@@ -36,5 +37,19 @@ export const startLoadingNotes = (uid = '') => {
     if (!uid) throw new Error('EL UID DEL USUARIO NO ESXISTE');
     const notes = await loadNOtes(uid);
     dispatch(setNotes(notes));
+  };
+};
+
+export const startSaveNote = () => {
+  return async (dispatch, getState) => {
+    dispatch(setSaving());
+    const { uid } = getState().auth;
+    const { active: note } = getState().journalSlice;
+    const noteToFirestore = { ...note };
+    delete noteToFirestore.id;
+    /////guardo la nota en firebase
+    const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
+    await setDoc(docRef, noteToFirestore, { merge: true });
+    dispatch(updateNote(note));
   };
 };

@@ -1,4 +1,4 @@
-import { collection, getDocs } from 'firebase/firestore/lite';
+import { collection, getDocs, Timestamp } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../firebase/config';
 
 export const loadNOtes = async (uid = '') => {
@@ -7,8 +7,15 @@ export const loadNOtes = async (uid = '') => {
   const collectionRef = collection(FirebaseDB, `${uid}/journal/notes`);
   const docs = await getDocs(collectionRef);
   const notes = [];
+  // docs.forEach((document) => {
+  //   notes.push({ id: document.id, ...document.data() });
+  // });
   docs.forEach((document) => {
-    notes.push({ id: document.id, ...document.data() });
+    const data = document.data();
+    // Convierte el Timestamp a un número o string
+    const date =
+      data.date instanceof Timestamp ? data.date.toDate().getTime() : data.date;
+    notes.push({ id: document.id, ...data, date });
   });
 
   return notes;

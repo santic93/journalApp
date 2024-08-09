@@ -21,10 +21,11 @@ import { useMemo } from 'react';
 export const Login = () => {
   const { status, errorMessage } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { email, password, onInputChange } = useForm({
+  const formDate = {
     email: '',
     password: '',
-  });
+  };
+  const { email, password, onInputChange } = useForm(formDate);
   const isAuthenticated = useMemo(() => status === 'checking', [status]);
   const onSubmit = (e) => {
     e.preventDefault();
