@@ -1,7 +1,10 @@
 import { StarRateOutlined, StartOutlined } from '@mui/icons-material';
 import { Grid, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
 
 export const NothingSelectedView = () => {
+  const { notes } = useSelector((state) => state.journalSlice);
+  console.log(notes);
   return (
     <Grid
       className='animate__animated animate__fadeIn animate__faster'
@@ -21,7 +24,7 @@ export const NothingSelectedView = () => {
       </Grid>
       <Grid item xs={12}>
         <Typography color='white' variant='h5'>
-          Selecciona o crea una nota
+          {notes.length ? 'Selecciona o crea una nota' : 'Crea una Nota'}
         </Typography>
       </Grid>
     </Grid>

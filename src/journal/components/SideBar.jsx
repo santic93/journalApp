@@ -48,9 +48,29 @@ export const SideBar = ({ drawerWidth = 240, imageUrl = [] }) => {
         <Divider />
 
         <List>
-          {notes.map((note) => (
-            <SideBarItem key={note.id} {...note} />
-          ))}
+          {notes?.length ? (
+            <>
+              {notes.map((note) => (
+                <SideBarItem key={note.id} {...note} />
+              ))}
+            </>
+          ) : (
+            <Typography
+              variant='h6'
+              sx={{
+                display: 'flex',
+                textAlign: 'center',
+                justifyContent: 'center',
+                flexWrap: 'wrap',
+                marginTop: '100%',
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+                color: 'red',
+              }}
+            >
+              Todavia no tenes notas
+            </Typography>
+          )}
         </List>
       </Drawer>
     </Box>
