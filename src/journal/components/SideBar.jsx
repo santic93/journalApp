@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { setActiveNote } from '../../store/journal/journalSlice';
+import { SideBarItem } from './SideBarItem';
 
 export const SideBar = ({ drawerWidth = 240, imageUrl = [] }) => {
   const { displayName, photoURL } = useSelector((state) => state.auth);
@@ -47,42 +48,9 @@ export const SideBar = ({ drawerWidth = 240, imageUrl = [] }) => {
         <Divider />
 
         <List>
-          {notes.length ? (
-            <>
-              {notes.map((note) => (
-                <ListItem key={note.id} disablePadding>
-                  <ListItemButton
-                    onClick={() => dispatch(setActiveNote({ note, imageUrl }))}
-                  >
-                    <ListItemIcon>
-                      <TurnedInNot />
-                    </ListItemIcon>
-                    <Grid container>
-                      <ListItemText
-                        // primary={
-                        //   note.title.length > 17
-                        //     ? note.title.substring(0, 17) + '...'
-                        //     : note.title
-                        // }
-                      />
-                      <ListItemText secondary={note.body} />
-                    </Grid>
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </>
-          ) : (
-            <Box
-              component={'nav'}
-              sx={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-              }}
-            >
-              <h3>Todavia no tenes Notas...</h3>
-            </Box>
-          )}
+          {notes.map((note) => (
+            <SideBarItem key={note.id} {...note} />
+          ))}
         </List>
       </Drawer>
     </Box>

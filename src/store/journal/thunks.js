@@ -44,14 +44,14 @@ export const startSaveNote = () => {
   return async (dispatch, getState) => {
     dispatch(setSaving());
     const { uid } = getState().auth;
-    const { active: notes } = getState().journalSlice;
-    console.log(notes)
-    const noteToFirestore = { ...notes };
+    const { active: note } = getState().journalSlice;
+    console.log(note)
+    const noteToFirestore = { ...note };
     console.log(noteToFirestore)
     delete noteToFirestore.id;
     /////guardo la nota en firebase
-    const docRef = doc(FirebaseDB, `${uid}/journal/notes/${notes.id}`);
+    const docRef = doc(FirebaseDB, `${uid}/journal/notes/${note.id}`);
     await setDoc(docRef, noteToFirestore, { merge: true });
-    dispatch(updateNote(notes));
+    dispatch(updateNote(note));
   };
 };
