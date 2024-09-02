@@ -21,17 +21,18 @@ export const SideBarItem = ({ title = '', body, id, date, imageUrls = [] }) => {
             : title;
     },[ title ])
 
+
   return (
     <ListItem disablePadding>
-        <ListItemButton onClick={ onClickNote }>
-            <ListItemIcon>
-                <TurnedInNot />
-            </ListItemIcon>
-            <Grid container>
-                <ListItemText primary={ newTitle } />
-                <ListItemText secondary={ body } />
-            </Grid>
-        </ListItemButton>
-    </ListItem>
+    <ListItemButton onClick={ onClickNote }>
+        <ListItemIcon>
+            <TurnedInNot />
+        </ListItemIcon>
+        <Grid container>
+            <ListItemText primary={ newTitle } />
+            <ListItemText secondary={ body } />
+        </Grid>
+    </ListItemButton>
+</ListItem>
   )
 }

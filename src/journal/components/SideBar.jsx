@@ -17,62 +17,41 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setActiveNote } from '../../store/journal/journalSlice';
 import { SideBarItem } from './SideBarItem';
 
-export const SideBar = ({ drawerWidth = 240, imageUrl = [] }) => {
+export const SideBar = ({ drawerWidth = 240 }) => {
   const { displayName, photoURL } = useSelector((state) => state.auth);
   const { notes } = useSelector((state) => state.journalSlice);
   const dispatch = useDispatch();
 
   return (
     <Box
-      component={'nav'}
-      sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-    >
-      <Drawer
-        variant='permanent'
+    component='nav'
+    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+>
+    <Drawer
+        variant='permanent' // temporary
         open
-        sx={{
-          display: { xs: 'block' },
-          '& .MuiDrawe-paper': { boxSizing: 'border-box', width: drawerWidth },
+        sx={{ 
+            display: { xs: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth }
         }}
-      >
+    >
         <Toolbar>
-          <Typography variant='h6' noWrap component={'div'}>
-            {displayName}
-          </Typography>
-          <Avatar
-            alt={displayName}
-            src={`${photoURL}`}
-            sx={{ margin: '10px' }}
-          />
+            <Typography variant='h6' noWrap component='div'>
+                { displayName }
+            </Typography>
         </Toolbar>
         <Divider />
 
         <List>
-          {notes?.length ? (
-            <>
-              {notes.map((note) => (
-                <SideBarItem key={note.id} {...note} />
-              ))}
-            </>
-          ) : (
-            <Typography
-              variant='h6'
-              sx={{
-                display: 'flex',
-                textAlign: 'center',
-                justifyContent: 'center',
-                flexWrap: 'wrap',
-                marginTop: '100%',
-                fontWeight: 'bold',
-                fontStyle: 'italic',
-                color: 'red',
-              }}
-            >
-              Todavia no tenes notas
-            </Typography>
-          )}
+            {
+                notes.map( note => (
+                    <SideBarItem key={ note.id } { ...note } />
+                ))
+            }
         </List>
-      </Drawer>
-    </Box>
+
+    </Drawer>
+
+</Box>
   );
 };
