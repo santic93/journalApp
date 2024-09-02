@@ -2,6 +2,7 @@ import { collection, deleteDoc, doc, setDoc } from 'firebase/firestore/lite';
 import { FirebaseDB } from '../../firebase/config';
 import {
   addNewEmptyNote,
+  deleteNoteById,
   savingNewNote,
   setActiveNote,
   setNotes,
@@ -13,28 +14,26 @@ import { loadNOtes } from '../../helpers/loadNotes';
 import { fileUpload } from '../../helpers/fileUpload';
 ////CON ESTE CODIGO ESTOY INSERTANDO UNA NUEVA NOTA EN FIREBASE
 export const startNewNote = () => {
-  return async( dispatch, getState ) => {
-
-      dispatch( savingNewNote() );
-
-      const { uid } = getState().auth;
-
-      const newNote = {
-          title: '',
-          body: '',
-          date: new Date().getTime(),
-      }
-
-      const newDoc = doc( collection( FirebaseDB, `${ uid }/journal/notes`) );
-      await setDoc( newDoc, newNote );
-
-      newNote.id = newDoc.id;  
-
-      //! dispatch
-      dispatch( addNewEmptyNote( newNote ) );
-      dispatch( setActiveNote( newNote ) );
-
-  }
+  return async (dispatch, getState) => {
+    dispatch(savingNewNote());
+    const { uid } = getState().auth;
+    //tomar uid, crear nota
+    const newNote = {
+      title: "",
+      body: "",
+      imageUrls: [],
+      date: new Date().getTime()
+  };
+  
+    const newDoc = doc(collection(FirebaseDB, `${uid}/journal/notes`));
+    ///primero me pide la referencia donde quiero insertarla, y segundo el documento que quiero guardar en la base
+    const setDocRes = await setDoc(newDoc, newNote);
+    ///le creo la propiedad id a la nota
+    newNote.id = newDoc.id;
+    ///despues hacer dispatch
+    dispatch(addNewEmptyNote(newNote));
+    dispatch(setActiveNote(newNote));
+  };
 }
 
 
@@ -55,7 +54,7 @@ export const startSaveNote = () => {
       dispatch( setSaving() );
 
       const { uid } = getState().auth;
-      const { active:note } = getState().journal;
+      const { active:note } = getState().journalSlice;
 
       const noteToFireStore = { ...note };
       delete noteToFireStore.id;
@@ -91,7 +90,7 @@ export const startDeletingNote = () => {
   return async( dispatch, getState) => {
 
       const { uid } = getState().auth;
-      const { active: note } = getState().journal;
+      const { active: note } = getState().journalSlice;
 
       const docRef = doc( FirebaseDB, `${ uid }/journal/notes/${ note.id }`);
       await deleteDoc( docRef );

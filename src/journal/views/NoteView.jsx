@@ -1,17 +1,17 @@
-import { SaveOutlined } from '@mui/icons-material';
-import { Button, Grid, TextField, Typography } from '@mui/material';
+import { DeleteOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material';
+import { Button, Grid, IconButton, TextField, Typography } from '@mui/material';
 import { ImageGallery } from '../components/ImageGallery';
 import { useForm } from '../../hooks/useForm';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { setActiveNote } from '../../store/journal/journalSlice';
-import { startSaveNote } from '../../store/journal/thunks';
+import { startDeletingNote, startSaveNote, startUploadingFiles } from '../../store/journal/thunks';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
 export const NoteView = () => {
 
   const dispatch = useDispatch();
-  const { active:note, messageSaved, isSaving } = useSelector( state => state.journal );
+  const { active:note, messageSaved, isSaving } = useSelector( state => state.journalSlice );
 
   const { body, title, date, onInputChange, formState } = useForm( note );
 
