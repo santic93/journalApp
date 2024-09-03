@@ -28,7 +28,11 @@ export const NoteView = () => {
 
   const dateString = useMemo(() => {
     const newDate = new Date(date);
-    return newDate.toUTCString();
+    return newDate.toLocaleDateString('es-ES', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    });
   }, [date]);
 
   const fileInputRef = useRef();
@@ -49,7 +53,6 @@ export const NoteView = () => {
 
   const onFileInputChange = ({ target }) => {
     if (target.files === 0) return;
-    console.log(target.files);
     dispatch(startUploadingFiles(target.files));
   };
 
