@@ -17,6 +17,8 @@ export const NavBar = ({ drawerWidth }) => {
       sx={{
         width: { sm: `calc(100% - ${drawerWidth}px)` },
         ml: { sm: `${drawerWidth}px` },
+        backgroundColor: '#004d40',
+        color: '#000000',
       }}
     >
       <Toolbar>
@@ -35,8 +37,7 @@ export const NavBar = ({ drawerWidth }) => {
           alignItems='center'
         >
           <Typography variant='h6' noWrap component='div'>
-            {' '}
-            JournalApp{' '}
+            Mis Notas
           </Typography>
 
           <IconButton color='error' onClick={onLogout}>
