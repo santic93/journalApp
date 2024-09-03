@@ -3,8 +3,8 @@ import { AppBar, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { startLogout } from '../../store/auth/thunks';
-
-export const NavBar = ({ drawerWidth }) => {
+import MenuIcon from '@mui/icons-material/Menu';
+export const NavBar = ({ drawerWidth, onToggleDrawer }) => {
   const dispatch = useDispatch();
 
   const onLogout = () => {
@@ -13,38 +13,27 @@ export const NavBar = ({ drawerWidth }) => {
 
   return (
     <AppBar
-      position='fixed'
-      sx={{
-        width: { sm: `calc(100% - ${drawerWidth}px)` },
-        ml: { sm: `${drawerWidth}px` },
-        backgroundColor: '#004d40',
-        color: '#000000',
-      }}
-    >
-      <Toolbar>
-        <IconButton
-          color='inherit'
-          edge='start'
-          sx={{ mr: 2, display: { sm: 'none' } }}
-        >
-          <MenuOutlined />
-        </IconButton>
-
-        <Grid
-          container
-          direction='row'
-          justifyContent='space-between'
-          alignItems='center'
-        >
-          <Typography variant='h6' noWrap component='div'>
-            Mis Notas
-          </Typography>
-
-          <IconButton color='error' onClick={onLogout}>
-            <LogoutOutlined />
-          </IconButton>
-        </Grid>
-      </Toolbar>
-    </AppBar>
+    position='fixed'
+    sx={{
+      width: { sm: `calc(100% - ${drawerWidth}px)` },
+      ml: { sm: `${drawerWidth}px` },
+    }}
+  >
+    <Toolbar>
+      <IconButton
+        color='inherit'
+        aria-label='open drawer'
+        edge='start'
+        onClick={onToggleDrawer}
+        sx={{ mr: 2, display: { sm: 'none' } }}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Typography variant='h6' noWrap component='div'>
+        Journal App
+      </Typography>
+    </Toolbar>
+  </AppBar>
+  
   );
 };
